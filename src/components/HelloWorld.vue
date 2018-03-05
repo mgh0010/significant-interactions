@@ -272,7 +272,13 @@ export default {
       this.snackbar.show = true
     },
     formatDate: function (date) {
-      let dateString = date.toString();
+      try {
+        var dateString = date.toString();
+      }
+      catch(err) {
+        console.log(err.message);
+        return '';
+      }
       // date is year-mo-da
       // date is 0123456789
       let year = dateString.slice(0,4);

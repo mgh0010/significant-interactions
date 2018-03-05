@@ -66,12 +66,12 @@
 		},
 		methods: {
 			login: function(event) {
-				this.$router.push('hello-world')
+				this.$router.push('sig-int')
 			},
 			signIn: function() {
 				firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
 					(user) => {
-						this.$router.push('hello-world')
+						this.$router.push('sig-int')
 					}, 
 					(err) => {
 						alert('Oops, ' + err.message)

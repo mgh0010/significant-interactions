@@ -1,6 +1,7 @@
 <template>
-  <div class="hello">
+  <div class="sig-int">
     <h1 class="display-2">Significant Interactions!</h1>
+    <!-- form -->
     <v-container grid-list-lg text-xs-center>
       <v-layout row wrap>
         <v-flex xs12>
@@ -24,13 +25,25 @@
                 <v-select
                   :items="grades"
                   v-model="newPerson.grade"
-                  label="Choose a grade"
+                  label="Choose a grade..."
                   single-line
                   bottom
                   dark
                 ></v-select>
               </v-flex>  
               <!-- end of grade -->
+              <!-- staff -->
+              <v-flex xs12 sm6>
+                <v-select
+                  :items="staff"
+                  v-model="newPerson.staff"
+                  label="Who are you..."
+                  single-line
+                  bottom
+                  dark
+                ></v-select>
+              </v-flex>  
+              <!-- end of staff -->
               <!-- where -->
               <v-flex xs12 sm6>
                 <v-text-field
@@ -68,7 +81,7 @@
               </v-flex>
               <v-flex xs12 md8 lg5>
                 <!-- time picker -->
-                <v-time-picker  :landscape='landscapeTimePicker' class='grey darken-3' light v-model="newPerson.timePicker"></v-time-picker>
+                <v-time-picker  :landscape='landscapeTimePicker' required class='grey darken-3' light v-model="newPerson.timePicker"></v-time-picker>
                 <!-- end of time picker -->
                 <!-- add person button -->
                 <v-flex xs4 offset-xs4>
@@ -77,7 +90,7 @@
                   class='mt-5'
                   :flat='!valid'
                   :outline='valid' 
-                  :class='{ green: valid}'
+                  :class='{ green: valid }'
                   @click='addPerson'
                   >Add to list</v-btn>
                 </v-flex>
@@ -90,8 +103,14 @@
         </v-flex>
       </v-layout>
     </v-container>
+    <!-- end of form -->
 
-  <v-container grid-list-md text-xs-center class='px-4 mt-4'>
+    <!-- stats -->
+    <!-- <span class="subheading">{{interactionLeader}}</span> -->
+    <!-- end of stats -->
+
+    <!-- table -->
+    <v-container grid-list-md text-xs-center class='px-4 mt-4'>
       <v-layout row wrap>
         <v-flex xs12>
           <table>
@@ -101,35 +120,41 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for='person in people' :key='person.id'>
+              <tr 
+              v-for='person in people' 
+              :key='person.id' 
+              :class='colorGivenPerson(person)'>
+                <td>
+                  <v-btn flat icon @click='removePerson(person)'>
+                    <i class="material-icons">delete</i>
+                  </v-btn>
+                  <v-snackbar
+                    :timeout="3000"
+                    bottom
+                    right
+                    vertical
+                    v-model='snackbar.show'
+                  >
+                    {{ snackbar.message }}
+                    <v-btn flat color="pink" @click.native="snackbar.show = false">Close</v-btn>
+                  </v-snackbar>
+                </td>
                 <td> {{person.name}} </td>          
                 <td> {{person.grade}} </td>          
                 <!-- <td> {{person.datePicker.toString()}} </td>           -->
                 <td> {{person.girlOrGuy}} </td>
-                <td v-if='dateIsNull'> {{formatDate(person.datePicker.toString())}} </td>          
+                <td v-if='dateIsNull'> {{formatDate(person.datePicker)}} </td>          
                 <td v-if='timeIsNull'> {{formatTime(person.timePicker)}} </td>          
                 <td> {{person.where}} </td>          
-                <td>
-                    <v-btn flat icon @click='removePerson(person)'>
-                      <i class="material-icons">delete</i>
-                    </v-btn>
-                    <v-snackbar
-                      :timeout="3000"
-                      bottom
-                      right
-                      vertical
-                      v-model='snackbar.show'
-                    >
-                      {{ snackbar.message }}
-                      <v-btn flat color="pink" @click.native="snackbar.show = false">Close</v-btn>
-                    </v-snackbar>
-                </td>
+                <td> {{person.staff}} </td>          
+                
               </tr>
             </tbody>
           </table>
         </v-flex>
       </v-layout>
     </v-container>
+    <!-- end of table -->
 
  </div> 
 </template>
@@ -151,19 +176,20 @@ let db = app_.database()
 let peopleRef = db.ref('people')
 
 export default {
-  name: 'HelloWorld',
+  name: 'SigInt',
   data () {
     return {
       landscapeTimePicker: false,
-      headers: ['Name', 'Grade', 'Girl/Guy', 'Day', 'Time', 'Where/Why'],
+      headers: ['', 'Name', 'Grade', 'Girl/Guy', 'Day', 'Time', 'Where/Why', 'Staff'],
       people: this.people,
       newPerson: {
                 name: '',
                 grade: '',
                 where: '',
-                girlOrGuy: null,
+                girlOrGuy: '',
                 datePicker: null,
-                timePicker: null
+                timePicker: null,
+                staff: ''
                },
       name: '',
       rules: {
@@ -172,6 +198,9 @@ export default {
       grades: [
       'Freshman', 'Sophomore','Junior','Senior', 'Grad'
       ],
+      staff: [
+      'Brandon', 'Chris', 'Kate', 'McCay', 'Daniel', 'Sharon', 'Michael', 'Trey', 'Simon', 'Neiman',
+      'Hank'],
       snackbar: {
         show: false,
         message: 'List Updated!'
@@ -213,10 +242,19 @@ export default {
       else {
         return false;
       }
-    }
+    }  
   },
   methods: {
+    testAddPerson: function (event) {
+    },
     addPerson: function(event) {
+      console.log(this.timePicker);
+      if (this.timePicker == null) {
+        this.timePicker = '';
+      }
+      if (this.datePicker == null) {
+        this.datePicker = '';
+      }
       peopleRef.push(this.newPerson);
       this.snackbar.message = 'Interaction added!'
       this.snackbar.show = true
@@ -234,11 +272,12 @@ export default {
       this.snackbar.show = true
     },
     formatDate: function (date) {
+      let dateString = date.toString();
       // date is year-mo-da
       // date is 0123456789
-      let year = date.slice(0,4);
-      let month = date.slice(5,7)
-      let day = date.slice(8,10)
+      let year = dateString.slice(0,4);
+      let month = dateString.slice(5,7)
+      let day = dateString.slice(8,10)
       return `${day} ${this.months[month]}`;
       // Use below code for year
       // return `${day} ${this.months[month]} ${year}`;
@@ -253,6 +292,43 @@ export default {
       //   time[0] = +time[0] % 12 || 12; // Adjust hours
       // }
       return time;
+    },
+    colorGivenPerson: function (person) {
+      if (person.staff == 'Michael') {
+        return 'green lighten-4'
+      }
+      else if (person.staff == 'Brandon') {
+        return 'red lighten-4'
+      }
+      else if (person.staff == 'Chris') {
+        return 'blue lighten-4'
+      }
+      else if (person.staff == 'Kate') {
+        return 'pink lighten-4'
+      }
+      else if (person.staff == 'McCay') {
+        return 'indigo lighten-4'
+      }
+      else if (person.staff == 'Daniel') {
+        return 'light-blue lighten-4'
+      }
+      else if (person.staff == 'Sharon') {
+        return 'cyan lighten-4'
+      }
+      else if (person.staff == 'Trey') {
+        return 'teal lighten-4'
+      }
+      else if (person.staff == 'Simon') {
+        return 'lime lighten-4'
+      }
+      else if (person.staff == 'Neiman') {
+        return 'orange lighten-4'
+      }
+      else if (person.staff == 'Hank') {
+        return 'blue-grey lighten-4'
+      }
+    },
+    interactionLeader: function () {
     }
   },
   firebase: {

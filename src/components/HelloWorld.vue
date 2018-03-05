@@ -4,8 +4,8 @@
     <v-container grid-list-lg text-xs-center>
       <v-layout row wrap>
         <v-flex xs12>
-          <div class="green lighten-4 mx-4 px-4">
-            <h5 class="display-1 pt-4">Who did you meet with?</h5>
+          <div class="green lighten-4 pa-4">
+            <h5 class="display-1">Who did you meet with?</h5>
 
             <!-- name -->
             <v-layout row wrap>
@@ -62,7 +62,7 @@
 
             </v-layout>
 
-            <v-layout row wrap>
+            <v-layout row wrap class='ml-3-neg'>
               <v-flex xs12 md4 lg5 offset-lg1 class='mb-4'>
                 <v-date-picker reactive class='grey darken-3' dark v-model="newPerson.datePicker"></v-date-picker>
               </v-flex>
@@ -264,7 +264,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-.mt-2 {
-  margin-top: 2em;
+.ml-3-neg {
+  margin-left: -16px;
 }
+
 </style>

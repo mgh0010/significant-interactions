@@ -1,7 +1,6 @@
 <template>
 	<div class="login">
 		<div class="content--wrap">
-			<div class="container">
 				<v-container grid-list-md text-xs-center>
 					<v-layout row wrap>
 						<v-flex xs12>
@@ -9,7 +8,7 @@
 						</v-flex>
 
 						<!-- inputs -->
-							<v-flex xs6 offset-xs3>
+							<v-flex xs10 sm8 md6 offset-xs1 offset-sm2 offset-md3>
 								<v-text-field
 									name='email'
 									label='Email'
@@ -18,7 +17,7 @@
 									:rules='[rules.required, rules.email]'
 									></v-text-field>
 							</v-flex>
-							<v-flex xs6 offset-xs3>
+							<v-flex xs10 sm8 md6 offset-xs1 offset-sm2 offset-md3>
 								<v-text-field
 									name='password'
 									label='Password'
@@ -42,7 +41,6 @@
 					</v-layout>
 				</v-container>
 				<!-- <router-link to='/sign-up'>go to sign up</router-link> -->
-			</div>
 
 		</div>
 	</div>

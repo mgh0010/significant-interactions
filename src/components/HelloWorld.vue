@@ -4,7 +4,7 @@
     <v-container grid-list-lg text-xs-center>
       <v-layout row wrap>
         <v-flex xs12>
-          <section class="green lighten-4 mx-4 px-4">
+          <div class="green lighten-4 mx-4 px-4">
             <h5 class="display-1 pt-4">Who did you meet with?</h5>
 
             <!-- name -->
@@ -63,12 +63,12 @@
             </v-layout>
 
             <v-layout row wrap>
-              <v-flex xs12 md4 class='mb-4'>
+              <v-flex xs12 md4 lg5 offset-lg1 class='mb-4'>
                 <v-date-picker reactive class='grey darken-3' dark v-model="newPerson.datePicker"></v-date-picker>
               </v-flex>
-              <v-flex xs12 md8>
+              <v-flex xs12 md8 lg5>
                 <!-- time picker -->
-                <v-time-picker  landscape class='grey darken-3' light v-model="newPerson.timePicker"></v-time-picker>
+                <v-time-picker  :landscape='landscapeTimePicker' class='grey darken-3' light v-model="newPerson.timePicker"></v-time-picker>
                 <!-- end of time picker -->
                 <!-- add person button -->
                 <v-flex xs4 offset-xs4>
@@ -86,7 +86,7 @@
               </v-flex>
             </v-layout>
 
-          </section>
+          </div>
         </v-flex>
       </v-layout>
     </v-container>
@@ -154,6 +154,7 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
+      landscapeTimePicker: false,
       headers: ['Name', 'Grade', 'Girl/Guy', 'Day', 'Time', 'Where/Why'],
       people: this.people,
       newPerson: {

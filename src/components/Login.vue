@@ -20,6 +20,7 @@
 							<v-flex xs10 sm8 md6 offset-xs1 offset-sm2 offset-md3>
 								<v-text-field
 									name='password'
+                  type="password"
 									label='Password'
 									v-model='password'
 									required
@@ -30,9 +31,9 @@
 
 						<!-- sign in button -->
 						<v-flex xs12>
-							<v-btn 
+							<v-btn
 							:flat='!valid'
-							:outline='valid' 
+							:outline='valid'
 							:class='{ green: valid}'
 							@click='signIn'
 							>Sign In</v-btn>
@@ -45,9 +46,9 @@
 
 						<!-- sign up button -->
 						<v-flex xs12>
-							<v-btn 
+							<v-btn
 							flat
-							outline 
+							outline
 							class='blue lighten-2'
 							@click='signUp'
 							>Sign Up</v-btn>
@@ -89,7 +90,7 @@
 				firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
 					(user) => {
 						this.$router.push('sig-int')
-					}, 
+					},
 					(err) => {
 						alert('Oops, ' + err.message)
 					}

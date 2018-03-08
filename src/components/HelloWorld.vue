@@ -29,8 +29,9 @@
                   single-line
                   bottom
                   dark
+                  required
                 ></v-select>
-              </v-flex>  
+              </v-flex>
               <!-- end of grade -->
               <!-- staff -->
               <v-flex xs12 sm6>
@@ -41,8 +42,9 @@
                   single-line
                   bottom
                   dark
+                  required
                 ></v-select>
-              </v-flex>  
+              </v-flex>
               <!-- end of staff -->
               <!-- where -->
               <v-flex xs12 sm6>
@@ -57,12 +59,12 @@
               </v-flex>
               <v-flex xs12 sm6>
                 <span class="subheading">Girl or Guy: </span>
-                <v-btn-toggle 
-                dark 
-                justify-start 
+                <v-btn-toggle
+                dark
+                justify-start
                 v-model="newPerson.girlOrGuy">
-                  <v-btn 
-                  class='red darken-2' 
+                  <v-btn
+                  class='red darken-2'
                   value="girl">
                     Girl
                   </v-btn>
@@ -76,20 +78,33 @@
             </v-layout>
 
             <v-layout row wrap class='ml-3-neg'>
+              <!-- date picker -->
               <v-flex xs12 md4 lg5 offset-lg1 class='mb-4'>
-                <v-date-picker reactive class='grey darken-3' dark v-model="newPerson.datePicker"></v-date-picker>
+                <v-date-picker
+                reactive
+                class='grey darken-3'
+                dark
+                v-model="newPerson.datePicker"></v-date-picker>
               </v-flex>
+              <!-- end of date picker -->
+
+              <!-- time picker -->
               <v-flex xs12 md8 lg5>
-                <!-- time picker -->
-                <v-time-picker  :landscape='landscapeTimePicker' required class='grey darken-3' light v-model="newPerson.timePicker"></v-time-picker>
-                <!-- end of time picker -->
+                <v-time-picker
+                :landscape='landscapeTimePicker'
+                required
+                class='grey darken-3'
+                light
+                v-model="newPerson.timePicker"></v-time-picker>
+              <!-- end of time picker -->
+
                 <!-- add person button -->
                 <v-flex xs4 offset-xs4>
                   <v-btn
                   large
                   class='mt-5'
                   :flat='!valid'
-                  :outline='valid' 
+                  :outline='valid'
                   :class='{ green: valid }'
                   @click='addPerson'
                   >Add to list</v-btn>
@@ -116,13 +131,13 @@
           <table>
             <thead>
               <tr>
-                <th v-for='header in headers' :key='header.id'>{{header}}</th>
+                <th v-for='header in headers' :key='header.id'>{{ header }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr 
-              v-for='person in people' 
-              :key='person.id' 
+              <tr
+              v-for='person in people'
+              :key='person.id'
               :class='colorGivenPerson(person)'>
                 <td>
                   <v-btn flat icon @click='removePerson(person)'>
@@ -139,15 +154,15 @@
                     <v-btn flat color="pink" @click.native="snackbar.show = false">Close</v-btn>
                   </v-snackbar>
                 </td>
-                <td> {{person.name}} </td>          
-                <td> {{person.grade}} </td>          
+                <td> {{person.name}} </td>
+                <td> {{person.grade}} </td>
                 <!-- <td> {{person.datePicker.toString()}} </td>           -->
                 <td> {{person.girlOrGuy}} </td>
-                <td v-if='dateIsNull'> {{formatDate(person.datePicker)}} </td>          
-                <td v-if='timeIsNull'> {{formatTime(person.timePicker)}} </td>          
-                <td> {{person.where}} </td>          
-                <td> {{person.staff}} </td>          
-                
+                <td v-if='dateIsNull'> {{formatDate(person.datePicker)}} </td>
+                <td v-if='timeIsNull'> {{formatTime(person.timePicker)}} </td>
+                <td> {{person.where}} </td>
+                <td> {{person.staff}} </td>
+
               </tr>
             </tbody>
           </table>
@@ -156,7 +171,7 @@
     </v-container>
     <!-- end of table -->
 
- </div> 
+ </div>
 </template>
 
 <script>
@@ -242,7 +257,7 @@ export default {
       else {
         return false;
       }
-    }  
+    }
   },
   methods: {
     testAddPerson: function (event) {

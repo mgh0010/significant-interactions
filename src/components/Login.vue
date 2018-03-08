@@ -28,8 +28,8 @@
 								</v-flex>
 						<!-- end of inputs -->
 
-						<!-- button -->
-						<v-flex xs4 offset-xs4>
+						<!-- sign in button -->
+						<v-flex xs12>
 							<v-btn 
 							:flat='!valid'
 							:outline='valid' 
@@ -37,7 +37,24 @@
 							@click='signIn'
 							>Sign In</v-btn>
 						</v-flex>
-						<!-- button -->
+						<!-- end of sign in button -->
+
+						<v-flex xs12>
+							<span class="subheading center-text">OR</span>
+						</v-flex>
+
+						<!-- sign up button -->
+						<v-flex xs12>
+							<v-btn 
+							flat
+							outline 
+							class='blue lighten-2'
+							@click='signUp'
+							>Sign Up</v-btn>
+						</v-flex>
+						<!-- end of sign up button -->
+
+
 					</v-layout>
 				</v-container>
 				<!-- <router-link to='/sign-up'>go to sign up</router-link> -->
@@ -77,6 +94,9 @@
 						alert('Oops, ' + err.message)
 					}
 				);
+			},
+			signUp: function() {
+				this.$router.push('sign-up')
 			}
 		},
 		computed: {
@@ -93,4 +113,7 @@
 </script>
 
 <style scoped>
+.center-text {
+	text-align: center;
+}
 </style>

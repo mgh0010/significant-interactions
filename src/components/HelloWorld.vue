@@ -135,13 +135,31 @@
               hide-actions
               class="elevation-1">
               <template slot="items" slot-scope="props">
+
                 <td :class='colorGivenPersonTwo(props.item.staff)'>{{ props.item.name }}</td>
                 <td :class='colorGivenPersonTwo(props.item.staff)' class="text-xs-right">{{ props.item.grade }}</td>
                 <td :class='colorGivenPersonTwo(props.item.staff)' class="text-xs-right">{{ props.item.girlOrGuy }}</td>
-                <td :class='colorGivenPersonTwo(props.item.staff)' class="text-xs-right">{{ props.item.datePicker }}</td>
-                <td :class='colorGivenPersonTwo(props.item.staff)' class="text-xs-right">{{ props.item.timePicker }}</td>
-                <td :class='colorGivenPersonTwo(props.item.staff)' class="text-xs-right">{{ props.item.where }}</td>
                 <td :class='colorGivenPersonTwo(props.item.staff)' class="text-xs-right">{{ props.item.staff }}</td>
+                <td :class='colorGivenPersonTwo(props.item.staff)' class="text-xs-right">
+                  {{ formatDate(props.item.datePicker) }}</td>
+                <td :class='colorGivenPersonTwo(props.item.staff)' class="text-xs-right">
+                  {{ formatTime(props.item.timePicker) }}</td>
+                <td :class='colorGivenPersonTwo(props.item.staff)' class="text-xs-right">{{ props.item.where }}</td>
+                <td class="red lighten-4">
+                  <v-btn flat icon @click='removePerson(props.item)'>
+                    <i class="material-icons">delete</i>
+                  </v-btn>
+                  <v-snackbar
+                    :timeout="3000"
+                    bottom
+                    right
+                    vertical
+                    v-model='snackbar.show'
+                  >
+                    {{ snackbar.message }}
+                    <v-btn flat color="pink" @click.native="snackbar.show = false">Close</v-btn>
+                  </v-snackbar>
+                </td>
               </template>
             </v-data-table>
           </template>
@@ -179,10 +197,11 @@ export default {
         { text: 'Name', value: 'name' },
         { text: 'Grade', value: 'grade' },
         { text: 'Girl/Guy', value: 'girlOrGuy' },
+        { text: 'Staff', value: 'staff' },
         { text: 'Day', value: 'datePicker' },
         { text: 'Time', value: 'timePicker' },
         { text: 'Where/Why', value: 'where' },
-        { text: 'Staff', value: 'staff' }
+        { text: '', value: 'remove' }
       ],
       people: this.people,
       newPerson: {
@@ -302,43 +321,7 @@ export default {
       // }
       return time;
     },
-    colorGivenPerson: function (person) {
-      if (person.staff == 'Michael') {
-        return 'green lighten-4'
-      }
-      else if (person.staff == 'Brandon') {
-        return 'red lighten-4'
-      }
-      else if (person.staff == 'Chris') {
-        return 'blue lighten-4'
-      }
-      else if (person.staff == 'Kate') {
-        return 'pink lighten-4'
-      }
-      else if (person.staff == 'McCay') {
-        return 'indigo lighten-4'
-      }
-      else if (person.staff == 'Daniel') {
-        return 'light-blue lighten-4'
-      }
-      else if (person.staff == 'Sharon') {
-        return 'cyan lighten-4'
-      }
-      else if (person.staff == 'Trey') {
-        return 'teal lighten-4'
-      }
-      else if (person.staff == 'Simon') {
-        return 'lime lighten-4'
-      }
-      else if (person.staff == 'Neiman') {
-        return 'orange lighten-4'
-      }
-      else if (person.staff == 'Hank') {
-        return 'blue-grey lighten-4'
-      }
-    },
     colorGivenPersonTwo: function (staff) {
-      console.log(staff);
       if (staff == 'Michael') {
         return 'green lighten-4'
       }

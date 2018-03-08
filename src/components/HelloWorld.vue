@@ -128,50 +128,29 @@
     <v-container grid-list-md text-xs-center class='px-4 mt-4'>
       <v-layout row wrap>
         <v-flex xs12>
-          <table>
-            <thead>
-              <tr>
-                <th v-for='header in headers' :key='header.id'>{{ header }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-              v-for='person in people'
-              :key='person.id'
-              :class='colorGivenPerson(person)'>
-                <td>
-                  <v-btn flat icon @click='removePerson(person)'>
-                    <i class="material-icons">delete</i>
-                  </v-btn>
-                  <v-snackbar
-                    :timeout="3000"
-                    bottom
-                    right
-                    vertical
-                    v-model='snackbar.show'
-                  >
-                    {{ snackbar.message }}
-                    <v-btn flat color="pink" @click.native="snackbar.show = false">Close</v-btn>
-                  </v-snackbar>
-                </td>
-                <td> {{person.name}} </td>
-                <td> {{person.grade}} </td>
-                <!-- <td> {{person.datePicker.toString()}} </td>           -->
-                <td> {{person.girlOrGuy}} </td>
-                <td v-if='dateIsNull'> {{formatDate(person.datePicker)}} </td>
-                <td v-if='timeIsNull'> {{formatTime(person.timePicker)}} </td>
-                <td> {{person.where}} </td>
-                <td> {{person.staff}} </td>
-
-              </tr>
-            </tbody>
-          </table>
+          <template>
+            <v-data-table
+              :headers="dataHeaders"
+              :items="people"
+              hide-actions
+              class="elevation-1">
+              <template slot="items" slot-scope="props">
+                <td :class='colorGivenPersonTwo(props.item.staff)'>{{ props.item.name }}</td>
+                <td :class='colorGivenPersonTwo(props.item.staff)' class="text-xs-right">{{ props.item.grade }}</td>
+                <td :class='colorGivenPersonTwo(props.item.staff)' class="text-xs-right">{{ props.item.girlOrGuy }}</td>
+                <td :class='colorGivenPersonTwo(props.item.staff)' class="text-xs-right">{{ props.item.datePicker }}</td>
+                <td :class='colorGivenPersonTwo(props.item.staff)' class="text-xs-right">{{ props.item.timePicker }}</td>
+                <td :class='colorGivenPersonTwo(props.item.staff)' class="text-xs-right">{{ props.item.where }}</td>
+                <td :class='colorGivenPersonTwo(props.item.staff)' class="text-xs-right">{{ props.item.staff }}</td>
+              </template>
+            </v-data-table>
+          </template>
         </v-flex>
       </v-layout>
     </v-container>
     <!-- end of table -->
 
- </div>
+  </div>
 </template>
 
 <script>
@@ -185,10 +164,10 @@ let config = {
     storageBucket: "fir-test-52feb.appspot.com",
     messagingSenderId: "328131514642"
   };
-let app_ = Firebase.initializeApp(config)
-let db = app_.database()
+let app_ = Firebase.initializeApp(config);
+let db = app_.database();
 
-let peopleRef = db.ref('people')
+let peopleRef = db.ref('people');
 
 export default {
   name: 'SigInt',
@@ -196,6 +175,15 @@ export default {
     return {
       landscapeTimePicker: false,
       headers: ['', 'Name', 'Grade', 'Girl/Guy', 'Day', 'Time', 'Where/Why', 'Staff'],
+      dataHeaders: [
+        { text: 'Name', value: 'name' },
+        { text: 'Grade', value: 'grade' },
+        { text: 'Girl/Guy', value: 'girlOrGuy' },
+        { text: 'Day', value: 'datePicker' },
+        { text: 'Time', value: 'timePicker' },
+        { text: 'Where/Why', value: 'where' },
+        { text: 'Staff', value: 'staff' }
+      ],
       people: this.people,
       newPerson: {
                 name: '',
@@ -346,6 +334,42 @@ export default {
         return 'orange lighten-4'
       }
       else if (person.staff == 'Hank') {
+        return 'blue-grey lighten-4'
+      }
+    },
+    colorGivenPersonTwo: function (staff) {
+      console.log(staff);
+      if (staff == 'Michael') {
+        return 'green lighten-4'
+      }
+      else if (staff == 'Brandon') {
+        return 'red lighten-4'
+      }
+      else if (staff == 'Chris') {
+        return 'blue lighten-4'
+      }
+      else if (staff == 'Kate') {
+        return 'pink lighten-4'
+      }
+      else if (staff == 'McCay') {
+        return 'indigo lighten-4'
+      }
+      else if (staff == 'Daniel') {
+        return 'light-blue lighten-4'
+      }
+      else if (staff == 'Sharon') {
+        return 'cyan lighten-4'
+      }
+      else if (staff == 'Trey') {
+        return 'teal lighten-4'
+      }
+      else if (staff == 'Simon') {
+        return 'lime lighten-4'
+      }
+      else if (staff == 'Neiman') {
+        return 'orange lighten-4'
+      }
+      else if (staff == 'Hank') {
         return 'blue-grey lighten-4'
       }
     },

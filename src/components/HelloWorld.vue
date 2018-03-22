@@ -1,5 +1,30 @@
 <template>
   <div class="sig-int">
+
+    <!-- {{people[0]}} -->
+    <v-container grid-list-sm text-xs-center>
+      <v-layout row wrap>
+        <template v-for='name in staff'>
+          <v-flex xs2 sm1>
+            <p>{{name}}: {{staffNum(name)}}</p>
+          </v-flex>
+        </template>
+      </v-layout>
+      <v-layout row wrap>
+        <table>
+          <tr>
+            
+          </tr>
+        </table>
+        <template v-for='(statVal,statKey) in statsInfo'>
+          <v-flex xs5 sm3 md2>
+            <p>{{statKey}}:{{statVal}} </p>
+          </v-flex>
+        </template>
+      </v-layout>
+    </v-container>
+    <v-btn @click='calculateStats'>{{calculateStatsBtnTxt}}</v-btn>
+
     <h1 class="display-2">Significant Interactions!</h1>
     <!-- form -->
     <v-container grid-list-lg text-xs-center>
@@ -203,7 +228,8 @@ export default {
         { text: 'Where/Why', value: 'where' },
         { text: '', value: 'remove' }
       ],
-      people: this.people,
+      statsInfo: {},
+      people: null,
       newPerson: {
                 name: '',
                 grade: '',
@@ -242,11 +268,18 @@ export default {
         '10': 'October',
         '11': 'November',
         '12': 'December',
-      }
+      },
+      calculateStatsBtnTxt: 'Calculate Stats'
     }
+  },
+  mounted: function() {
+    // this.calculateStats();
   },
   created: function() {
     var elem = document.querySelector('select');
+    peopleRef.on('value', function(snapshot) {
+      // this.people = snapshot.val();
+    });
   },
   computed: {
     dateIsNull: function () {
@@ -264,10 +297,43 @@ export default {
       else {
         return false;
       }
-    }
+    } 
   },
   methods: {
-    testAddPerson: function (event) {
+    calculateStats: function() {
+      this.calculateStatsBtnTxt = 'Update Stats';
+      let staffInteractions = 0;
+      let numFreshmanGuys = 0; let numFreshmanGirls = 0;let numSophomoreGuys = 0;let numSophomoreGirls = 0; let numJuniorGuys = 0; let numJuniorGirls = 0; let numSeniorGuys = 0; let numSeniorGirls = 0; let numGradGuys = 0; let numGradGirls = 0;
+      Object.keys(this.people).forEach((current) => {
+        let person = this.people[current];
+        if (person.grade == 'Freshman') { 
+          if (person.girlOrGuy == 'guy') { numFreshmanGuys++; }
+          else { numFreshmanGirls++; }
+        }
+        if (person.grade == 'Sophomore') { 
+          if (person.girlOrGuy == 'guy') { numSophomoreGuys++; }
+          else { numSophomoreGirls++; }
+        }
+        if (person.grade == 'Junior') { 
+          if (person.girlOrGuy == 'guy') { numJuniorGuys++; }
+          else { numJuniorGirls++; }
+        }
+        if (person.grade == 'Senior') { 
+          if (person.girlOrGuy == 'guy') { numSeniorGuys++; }
+          else { numSeniorGirls++; }
+        }
+        if (person.grade == 'Grad') { 
+          if (person.girlOrGuy == 'guy') { numGradGuys++; }
+          else { numGradGirls++; }
+        }
+      });
+
+      this.statsInfo = {'numFreshmanGuys': numFreshmanGuys, 'numFreshmanGirls': numFreshmanGirls,
+      'numSophomoreGuys': numSophomoreGuys, 'numSophomoreGirls': numSophomoreGirls,
+      'numJuniorGuys': numJuniorGuys, 'numJuniorGirls': numSophomoreGirls,
+      'numSeniorGuys': numSeniorGuys, 'numSeniorGirls': numSeniorGirls,
+      'numGradGuys': numGradGuys, 'numGradGirls': numGradGirls
+      };
     },
     addPerson: function(event) {
       console.log(this.timePicker);
@@ -356,7 +422,13 @@ export default {
         return 'blue-grey lighten-4'
       }
     },
-    interactionLeader: function () {
+    staffNum: function (staff) {
+      let staffInteractions = 0;
+      for (let i = 0; i < this.people.length; ++i) {
+        let person = this.people[i];
+        if (person.staff == staff) { staffInteractions++; }
+      }
+      return staffInteractions;
     }
   },
   firebase: {

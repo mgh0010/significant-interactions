@@ -55,7 +55,6 @@
 						</v-flex>
 						<!-- end of sign up button -->
 
-
 					</v-layout>
 				</v-container>
 				<!-- <router-link to='/sign-up'>go to sign up</router-link> -->
